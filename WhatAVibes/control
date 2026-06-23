@@ -1,0 +1,9 @@
+Package: com.yourname.whatavibes
+Name: WhatAVibes
+Version: 1.0.0
+Architecture: iphoneos-arm64
+Description: Chaotic, vibey Apple Music — custom fonts, animated now playing, and card layouts.
+Author: yourname
+Maintainer: yourname
+Section: Tweaks
+Depends: mobilesubstrate, preferenceloader
