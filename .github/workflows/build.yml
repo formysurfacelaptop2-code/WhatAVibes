@@ -1,0 +1,43 @@
+name: Build WhatAVibes
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install Theos
+        uses: actions/checkout@v4
+        with:
+          repository: theos/theos
+          path: theos
+          submodules: recursive
+
+      - name: Set THEOS env
+        run: echo "THEOS=$GITHUB_WORKSPACE/theos" >> $GITHUB_ENV
+
+      - name: Install Theos dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libtinfo5 libncurses5
+
+      - name: Download iOS SDK
+        run: |
+          curl -LO https://github.com/theos/sdks/releases/download/2023-09-27/iPhoneOS16.5.sdk.tar.zst
+          tar --zstd -xf iPhoneOS16.5.sdk.tar.zst -C $THEOS/sdks
+
+      - name: Build .deb
+        run: make package FINALPACKAGE=1
+
+      - name: Upload .deb artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: WhatAVibes-deb
+          path: packages/*.deb
