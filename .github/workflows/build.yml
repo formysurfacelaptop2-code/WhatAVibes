@@ -25,10 +25,11 @@ jobs:
 
           sudo apt-get install -y libncurses6 libncursesw6
 
-      - name: Download iOS SDK
+      - name: Install zstd and download iOS SDK
         run: |
+          sudo apt-get install -y zstd
           curl -LO https://github.com/theos/sdks/releases/download/2023-09-27/iPhoneOS16.5.sdk.tar.zst
-          tar --zstd -xf iPhoneOS16.5.sdk.tar.zst -C $THEOS/sdks
+          tar -I zstd -xf iPhoneOS16.5.sdk.tar.zst -C $THEOS/sdks
 
       - name: Build .deb
         run: make package FINALPACKAGE=1
